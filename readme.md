@@ -59,4 +59,29 @@ String Matching
 * **Key**: match
 * **Value**: one of "start", "end", or "exact" (for search by version number, one of "end" or "exact")
 * **Default**: anywhere, except for version number, which has a default of start
-  
+
+Returned Data
+-------------
+Data is returned as an array of objects. Each item in the array is an object representing a single method, property, or selector. This object comes with the following structure:
+
+      {
+        "url": "...",
+        "title": "...",
+        "type": "...", // "method", "property", or "selector"
+        "signatures": [
+          {
+            "added":"...",
+            "params": [
+              {
+                "name": "...",
+                "type": "...",
+                "optional": "...", // either "true" or an empty string
+                "desc": "..." // description of the parameter
+              }
+            ]
+          }
+        ],
+        "desc": "...", // short description
+        "longdesc": "...",
+        "return":"..." // type of return value
+      }
