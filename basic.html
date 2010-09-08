@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>jQuery API Search</title>
+  <script>document.documentElement.className = 'js';</script>
+  <link rel="stylesheet" href="styles/style.css" type="text/css" media="screen, projection" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="styles/ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+</head>
+<body>
+  <form id="jqas" action="" class="jqas group">
+    <div>
+      <a id="search-again" class="js-hide btn" href="#">&#x271A; Search Again</a>
+      <h3>jQuery API Search <span class="note">A demonstration</span></h3>
+      
+    </div>
+    <fieldset>
+      <div class="text">
+        <label for="title">Name</label>
+        <input type="text" id="title" name="title" />
+      </div>
+      <div class="text">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" />
+      </div>
+      <div class="text">
+        <label for="version">Version</label>
+        <input type="text" id="version" name="version" />
+      </div>
+      <div class="actions">
+        <button type="submit">Search</button>
+      </div>
+    </fieldset>
+    <fieldset class="includes">
+      <h4><a id="toggle-advanced" class="btn" href="#advanced"><span>&#x2712;</span> Advanced</a></h4>
+      <div id="advanced" class="js-hide">
+        <h5>Matching</h5>
+        <div class="radio">
+          <input type="radio" checked="checked" value="" id="match_anywhere" name="match" />
+          <label for="match_anywhere">Anywhere</label>
+        </div>
+        <div class="radio">
+          <input type="radio" value="start" id="match_start" name="match" />
+          <label for="match_start">Start</label>
+        </div>
+        <div class="radio">
+          <input type="radio" value="end" id="match_end" name="match" />
+          <label for="match_end">End</label>
+        </div>
+        <div class="radio">
+          <input type="radio" value="exact" id="match_exact" name="match" />
+          <label for="match_exact">Exact</label>
+        </div>
+        <h5>Include in Results</h5>
+        <div class="checkbox">
+          <input type="checkbox" checked="checked" value="added" id="added" name="include[]" />
+          <label for="added">Version Added</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked="checked" value="params" id="params" name="include[]" />
+          <label for="params">Arguments</label>
+        </div>
+      
+        <div class="checkbox">
+          <input type="checkbox" checked="checked" value="desc" id="short_description" name="include[]" />
+          <label for="short_description">Short Description</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked="checked" value="longdesc" id="long_description" name="include[]" />
+          <label for="long_description">Long Description</label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  
+<div id="log"></div>
+<script src="lib/LAB.src.min.js"></script>
+<script>
+  $LAB
+  .script('lib/jquery-1.4.2.min.js')
+  .wait()
+  .script('scripts/basic-search.js');
+</script>
+</body>
+</html>
