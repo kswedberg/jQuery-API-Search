@@ -34,7 +34,7 @@ $.fn.includeParams = function() {
   for (var i=0; i < KS.include.length; i++) {
     KS.includes[ KS.include[i].value ] = true;
   }
-  return '&' + $.param(KS.include);
+  return this;
 };
 
 $form.bind('submit', function(event) {
@@ -48,6 +48,7 @@ $form.bind('submit', function(event) {
   $.bbq.pushState('#' + KS.params);
 
 });
+
 $form.find('input:checkbox').bind('click', function(event) {
   $form.includeParams();
   outputResults( KS.cache[ $.param.fragment() ]);
@@ -72,7 +73,7 @@ $(window).bind('hashchange', function(event, initial) {
 
 // trigger the hashchange on page load so we can return to the initial state
 // and in case the user goes directly to a search
-$('form').includeParams();
+$form.includeParams();
 $(window).trigger('hashchange', true);
 
 
