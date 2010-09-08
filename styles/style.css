@@ -211,6 +211,7 @@ a:active {
 .signature .param {
   padding-left: 1em;
 }
+.basic .signatures .introduced,
 .signature .param strong {
   color: #444;
   cursor: help;

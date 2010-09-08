@@ -106,7 +106,7 @@ var buildItem = {
 
   // build the note indicating the version at which the signature (syntax) was introduced
   version: function(sigs , i) {
-    return '<div class="introduced">introduced in version ' +  sigs[i].added + '</div>';
+    return '<div class="introduced" title="introduced in version ' +  sigs[i].added + '">' + sigs[i].added + '</div>';
   },
 
   // build the title for each method signature (syntax)
