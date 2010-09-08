@@ -4,7 +4,7 @@
  *
  * Copyright 2010, Karl Swedberg
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * 
+ *
  *
  * Date: Thu Sep 2 16:15:54 2010 -0400
  */
@@ -13,10 +13,12 @@ var KS = {
   includes: {},
   params: $.param.fragment(),
   cache: {},
-  url: /\.dev/.test(location.hostname) ? 
+  url: /\.dev$/.test(location.hostname) ?
       'http://api.dev/jsonp/?callback=?' :
       'http://api.jquery.com/jsonp/?callback=?'
 };
+var $form = $('#jqas');
+
 $('#title').focus();
 
 $('#search-again').bind('click', function(event) {
@@ -25,39 +27,53 @@ $('#search-again').bind('click', function(event) {
   $(this).closest('form').find('fieldset').slideToggle();
 });
 
-$('form').bind('submit', function(event) {
-  event.preventDefault();
-  
-  $('#search-again').trigger('click');
+$.fn.includeParams = function() {
+  KS.include = this.find('input:checkbox').serializeArray();
 
-  KS.params = $(this).find('input:text, input:radio').serialize();
-  KS.include = $(this).find('input:checkbox').serializeArray();
-  
+  KS.includes = {};
   for (var i=0; i < KS.include.length; i++) {
     KS.includes[ KS.include[i].value ] = true;
   }
+  return '&' + $.param(KS.include);
+};
+
+$form.bind('submit', function(event) {
+  event.preventDefault();
+
+  $('#search-again').trigger('click');
+
+  KS.params = $form.find('input:text, input:radio').serialize();
+  $form.includeParams();
 
   $.bbq.pushState('#' + KS.params);
-  
+
+});
+$form.find('input:checkbox').bind('click', function(event) {
+  $form.includeParams();
+  outputResults( KS.cache[ $.param.fragment() ]);
 });
 
-
-$(window).bind('hashchange', function(event) {
+$(window).bind('hashchange', function(event, initial) {
   var search = $.param.fragment();
-
+  if ( $.bbq.getState('scrollTarget') && !initial ) {
+    return;
+  }
   if (!window.location.hash) {
     $('#log').html('');
   } else if (search in KS.cache) {
-    $('#log').html( KS.cache[search] );
+    outputResults( KS.cache[search] );
   } else {
     $('#log').html('<blink style="color: #999;">loading ...</blink>');
-    $.getJSON(KS.url, search, outputResults);
+    $.getJSON(KS.url, search, function(json) {
+      outputResults(json, true);
+    });
   }
 });
 
 // trigger the hashchange on page load so we can return to the initial state
 // and in case the user goes directly to a search
-$(window).trigger('hashchange');
+$('form').includeParams();
+$(window).trigger('hashchange', true);
 
 
 var buildItem = {
@@ -65,10 +81,10 @@ var buildItem = {
   // calls buildItem.params() and buildItem.version()
   signatures: function(item) {
     var sigs = item.signatures;
-    if (!sigs.length || (!KS.includes['added'] && !KS.includes['params'])) {
+    if (!sigs || !sigs.length || (!KS.includes['added'] && !KS.includes['params'])) {
       return this.title(item, {index: 0});
     }
-    var allSigs = '';      
+    var allSigs = '';
 
     for (var i = 0, sigCount = sigs.length; i < sigCount; i++) {
       allSigs += (i == sigCount -1) ? '<div class="signature last">' : '<div class="signature">';
@@ -81,7 +97,7 @@ var buildItem = {
       }
       allSigs += '</div>';
     }
-    
+
     return '<div class="signatures">' + allSigs + '</div>';
   },
   // build all of the params for a single signature (syntax)
@@ -106,8 +122,8 @@ var buildItem = {
   // build the title for each method signature (syntax)
   title: function(item, options) {
     var opts = $.extend({
-      index: 0, 
-      pre: '<strong>', 
+      index: 0,
+      pre: '<strong>',
       post: '</strong>'
     }, options);
 
@@ -126,7 +142,7 @@ var buildItem = {
     }
     return opts.pre + item.newTitle + opts.post;
   },
-  
+
   // build the short description for each entry
   desc: function(item) {
     if (KS.includes['desc']) {
@@ -134,7 +150,7 @@ var buildItem = {
     }
     return '';
   },
-  
+
   // build the long description for each entry
   longdesc: function(item) {
     if (KS.includes['longdesc']) {
@@ -145,30 +161,33 @@ var buildItem = {
 
 };
 
-function outputResults(json) {
+function outputResults(json, xhr) {
   var toc = [],
       list = [],
       entryCount = json.length;
 
+  if (xhr) {
+    KS.cache[ KS.params ] = json;
+  }
 
   for (var i=0; i < entryCount; i++) {
     var it = json[i],
         itemParts = [],
         ipCount = 0,
         entryid = 'entry-' + i;
-    
+
     toc[i] = buildItem.title(it, {
-      pre: '<li><a href="#' + entryid + '">', 
+      pre: '<li><a href="#' + entryid + '">',
       post: '</a></li>'
     });
-    
-    
-    itemParts[ipCount++] = '<h4><a id="' + entryid + '" href="' + it.url + '">' + it.title + '</a></h4>';
+
+
+    itemParts[ipCount++] = '<h4><a href="' + it.url + '">' + it.title + '</a></h4>';
     itemParts[ipCount++] = buildItem.signatures(it);
-    
+
     itemParts[ipCount++] = buildItem.desc(it);
     itemParts[ipCount++] = buildItem.longdesc(it);
-    
+
     list[i] = '<li id="' + entryid + '">' + itemParts.join('') + '</li>';
 
   }
@@ -184,14 +203,13 @@ function outputResults(json) {
   } else {
     $('#log').html('<p>Sorry, nothing found.</p>');
   }
-  KS.cache[ $.param.fragment() ] = $('#log').html();
 }
 
 function resultMsg(num) {
   var txt = '<strong>' + num + '</strong> ';
   txt += num == 1 ? 'result found' : 'results found';
   return '<p>' + txt + '</p>';
-  
+
 }
 
 
