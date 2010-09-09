@@ -13,18 +13,13 @@ form {
   width: 620px;
   margin: 20px auto;
   padding: 2em 1em 1em;
-/*  border: 1px solid #050;*/
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
-  border-radius: 12px;
-  background-color: #090;
+  border: 5px solid #050;
+  background-color: #197629;
 
-  -moz-box-shadow: 0 1px 12px #333;
-  -webkit-box-shadow: 0 1px 12px #333;
-  box-shadow: 0 1px 12px #333;
+  -moz-box-shadow: 0 1px 6px #242;
+  -webkit-box-shadow: 0 1px 6px #242;
+  box-shadow: 0 1px 6px #242;
 
-  background-image: -moz-linear-gradient(top, #9c9, #393);
-  background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #9c9),color-stop(1, #393));
   color: #fff;
 }
 
@@ -39,10 +34,7 @@ fieldset.includes {
   margin: 0;
   background-color: #efe;
   padding: 10px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  border: 1px solid #efe;
+  border: 3px solid #c7ccac;
   color: #333;
 }
 h3 {
@@ -297,7 +289,7 @@ blockquote {
   
 }
 /* clearfix from positioniseverything.net */
-
+.jqas p.image:after,
 .addeds:after,
 .group:after {
     content: ".";
@@ -306,6 +298,6 @@ blockquote {
     clear: both;
     visibility: hidden;
 }
-.addeds, .group {display: inline-block;}
-* html .addeds, * html .group {height: 1%;}
-.addeds, .group {display: block;}
+.jqas p.image, .addeds, .group {display: inline-block;}
+* html .jqas p.image, * html .addeds, * html .group {height: 1%;}
+.jqas p.image, .addeds, .group {display: block;}
