@@ -7,13 +7,6 @@ button {
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#009900', endColorstr='#003300')";
 }
 
-a.btn:hover,
-a.btn:focus,
-button:hover,
-button:focus {
-	filter:  progid:DXImageTransform.Microsoft.dropshadow(OffX=4px, OffY=7px, Color='#FFFFCC');
-	-ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=4px, OffY=7px, Color='#FFFFCC')";
-}
 a.btn:active,
 button:active {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#003300', endColorstr='#009900');
