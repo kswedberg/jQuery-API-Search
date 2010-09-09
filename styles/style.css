@@ -8,6 +8,10 @@ body {
   font-family: helvetica, arial, sans-serif;
   font-size: 13px;
 }
+form, input, label, button {
+  font-size: 1em;
+  font-family: helvetica, arial, sans-serif;
+}
 .js .js-hide { display: none; }
 form {
   width: 620px;
@@ -224,6 +228,23 @@ span.output {
   color: #090;
 }
 
+p.image:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+p.image {display: inline-block;}
+* html p.image {height: 1%;}
+p.image {display: block;}
+p.image img {
+  display: inline;
+}
+p.image img {
+  float: left;
+  margin-right: 3px;
+}
 blockquote {
   margin: 1em;
   padding: .75em;
