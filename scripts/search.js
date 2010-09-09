@@ -17,15 +17,10 @@ var KS = {
       'http://api.dev/jsonp/?callback=?' :
       'http://api.jquery.com/jsonp/?callback=?'
 };
-var $form = $('#jqas');
+var $form = $('#jqas'),
+    $log = $('#log');
 
-$('#title').focus();
-
-$('#search-again').bind('click', function(event) {
-  event.preventDefault();
-  $(this).toggleClass('js-hide');
-  $(this).closest('form').find('fieldset').slideToggle();
-});
+$('#title')[0].focus();
 
 $.fn.includeParams = function() {
   KS.include = this.find('input:checkbox').serializeArray();
@@ -36,16 +31,33 @@ $.fn.includeParams = function() {
   }
   return this;
 };
+var textVals = function() {
+  return $form.find('input:text').map(function() {
+    return this.value;
+  }).get().join('');
+};
+
+$('#search-again').bind('click', function(event) {
+  event.preventDefault();
+  $(this).toggleClass('js-hide');
+  $(this).closest('form').find('fieldset').slideToggle();
+});
+
+$('a[href=#]').live('click', function() {
+  return false;
+});
 
 $form.bind('submit', function(event) {
   event.preventDefault();
 
-  $('#search-again').trigger('click');
-
   KS.params = $form.find('input:text, input:radio').serialize();
   $form.includeParams();
+  if ( !textVals() ) {
+    $log.html('');
+  } else {
+    $.bbq.pushState('#' + KS.params);
+  }
 
-  $.bbq.pushState('#' + KS.params);
 
 });
 
@@ -56,12 +68,16 @@ $form.find('input:checkbox').bind('click', function(event) {
 
 $(window).bind('hashchange', function(event, initial) {
   var search = $.param.fragment();
+
+  if ( !window.location.hash ) {
+    return $log.html('');
+  }
+
   if ( $.bbq.getState('scrollTarget') && !initial ) {
     return;
   }
-  if (!window.location.hash) {
-    $('#log').html('');
-  } else if (search in KS.cache) {
+
+  if (search in KS.cache) {
     outputResults( KS.cache[search] );
   } else {
     $('#log').html('<blink style="color: #999;">loading ...</blink>');
@@ -69,12 +85,26 @@ $(window).bind('hashchange', function(event, initial) {
       outputResults(json, true);
     });
   }
+  if (!initial) {
+    $('#search-again').trigger('click');
+  }
+
 });
 
+// set up initial set of parameters and populate form if necessary
+$form.includeParams();
+var initialFrag = $.deparam.fragment();
+$form.find('input:text').val(function() {
+  return initialFrag[this.name] || '';
+});
 // trigger the hashchange on page load so we can return to the initial state
 // and in case the user goes directly to a search
-$form.includeParams();
-$(window).trigger('hashchange', true);
+if (!textVals()) {
+  $.bbq.removeState();
+} else {
+  $(window).trigger('hashchange', true);
+}
+
 
 
 var buildItem = {
@@ -155,7 +185,8 @@ var buildItem = {
   // build the long description for each entry
   longdesc: function(item) {
     if (KS.includes['longdesc']) {
-      return '<div class="longdesc">' + item.longdesc + '</div>';
+      var lngdesc = item.longdesc.replace(/(img .*?src=")\//g,'$1http://api.jquery.com/');
+      return '<div class="longdesc">' + lngdesc + '</div>';
     }
     return '';
   }
