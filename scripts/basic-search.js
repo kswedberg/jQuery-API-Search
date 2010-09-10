@@ -4,7 +4,7 @@
  *
  * Copyright 2010, Karl Swedberg
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * 
+ *
  *
  * Date: Thu Sep 2 16:15:54 2010 -0400
  */
@@ -45,23 +45,26 @@ $('#search-again').bind('click', function(event) {
   $(this).toggleClass('js-hide');
   $form.find('fieldset').slideToggle();
 });
-$('#clear-results').bind('click', function(event) {
+
+$('#clear-results').hide().bind('click', function(event) {
   event.preventDefault();
   $form.find('input:text').val(function() {
     return '';
   });
+  $(this).hide();
   $form.submit();
 });
+
 $form.bind('submit', function(event) {
   event.preventDefault();
   if ( !textVals() ) {
-    return $log.html('');
+     return $log.html('');
   }
-  
+
   $('#search-again').trigger('click');
   var $paramInputs = $form.find('input:text, input:radio');
-  
-  
+
+
   KS.params = $paramInputs.serialize();
 
   $form.includeParams();
@@ -73,16 +76,16 @@ $form.bind('submit', function(event) {
       outputResults(json, true);
     });
   }
-  
+
 });
 
 $form.find('input:checkbox').click(function() {
   var search = KS.cache[KS.params];
   if (search) {
     $form.includeParams();
-    outputResults( KS.cache[KS.params] );    
+    outputResults( KS.cache[KS.params] );
   }
-  
+
 });
 
 var buildItem = {
@@ -93,7 +96,7 @@ var buildItem = {
     if (!sigs.length || (!KS.includes['added'] && !KS.includes['params'])) {
       return this.title(item, {index: 0});
     }
-    var allSigs = '';      
+    var allSigs = '';
 
     for (var i = 0, sigCount = sigs.length; i < sigCount; i++) {
       allSigs += (i == sigCount -1) ? '<div class="signature group last">' : '<div class="signature group">';
@@ -104,9 +107,10 @@ var buildItem = {
       if (KS.includes['params']) {
         allSigs += this.params( sigs[i] );
       }
+      allSigs += this.options( sigs[i] );
       allSigs += '</div>';
     }
-    
+
     return '<div class="signatures">' + allSigs + '</div>';
   },
   // build all of the params for a single signature (syntax)
@@ -128,11 +132,42 @@ var buildItem = {
     return '<div class="introduced" title="introduced in version ' +  sigs[i].added + '">' + sigs[i].added + '</div>';
   },
 
+  // build the options for each signature
+  // options are really rare. probably only in $.ajax
+  options: function(sig) {
+    var opt = sig.options;
+    if (!opt) {
+      return '';
+    }
+
+    var opts = [];
+    for (var k = 0; k < opt.length; k++) {
+      opts[k] = [
+        '<div class="opt">',
+          '<div class="opt-title group">',
+            '<strong>',
+              opt[k].name,
+            '</strong> ',
+            opt[k].type ? ' <span>(' + opt[k].type + ')</span>' : '',
+            opt[k]['default'] ? '<span class="def">Default: ' + opt[k]['default'] + '</span>' : '',
+          '</div>',
+          '<div class="opt-desc">',
+            opt[k].desc,
+          '</div>',
+        '</div>'
+      ].join('');
+    }
+    opts.unshift('<div class="options">');
+    opts.push('</div>');
+
+    return opts.join('');
+  },
+
   // build the title for each method signature (syntax)
   title: function(item, options) {
     var opts = $.extend({
-      index: 0, 
-      pre: '<strong>', 
+      index: 0,
+      pre: '<strong>',
       post: '</strong>'
     }, options);
 
@@ -151,7 +186,7 @@ var buildItem = {
     }
     return opts.pre + item.newTitle + opts.post;
   },
-  
+
   // build the short description for each entry
   desc: function(item) {
     if (KS.includes['desc']) {
@@ -159,7 +194,7 @@ var buildItem = {
     }
     return '';
   },
-  
+
   // build the long description for each entry
   longdesc: function(item) {
     if (KS.includes['longdesc']) {
@@ -185,19 +220,18 @@ function outputResults(json, xhr) {
         itemParts = [],
         ipCount = 0,
         entryid = 'entry-' + i;
-    
+
     toc[i] = buildItem.title(it, {
-      pre: '<li><a href="#' + entryid + '">', 
+      pre: '<li><a href="#' + entryid + '">',
       post: '</a></li>'
     });
-    
-    
+
+
     itemParts[ipCount++] = '<h4><a id="' + entryid + '" href="' + it.url + '">' + it.title + '</a></h4>';
     itemParts[ipCount++] = buildItem.signatures(it);
-    
     itemParts[ipCount++] = buildItem.desc(it);
     itemParts[ipCount++] = buildItem.longdesc(it);
-    
+
     list[i] = '<li id="' + entryid + '">' + itemParts.join('') + '</li>';
 
   }
@@ -213,14 +247,14 @@ function outputResults(json, xhr) {
   } else {
     $log.html('<p>Sorry, nothing found.</p>');
   }
-  
+  $('#clear-results').show();
 }
 
 function resultMsg(num) {
   var txt = '<strong>' + num + '</strong> ';
   txt += num == 1 ? 'result found' : 'results found';
   return '<p>' + txt + '</p>';
-  
+
 }
 
 

@@ -109,7 +109,7 @@ if (!textVals()) {
 
 var buildItem = {
   // build all of the signatures (syntaxes) for a single method
-  // calls buildItem.params() and buildItem.version()
+  // calls buildItem.params(), buildItem.optiions(), and buildItem.version()
   signatures: function(item) {
     var sigs = item.signatures;
     if (!sigs || !sigs.length || (!KS.includes['added'] && !KS.includes['params'])) {
@@ -126,6 +126,7 @@ var buildItem = {
       if (KS.includes['params']) {
         allSigs += this.params( sigs[i] );
       }
+      allSigs += this.options( sigs[i] );
       allSigs += '</div>';
     }
 
@@ -174,6 +175,38 @@ var buildItem = {
     return opts.pre + item.newTitle + opts.post;
   },
 
+  // build the options for each signature
+  // options are really rare. probably only in $.ajax
+  options: function(sig) {
+    var opt = sig.options;
+    if (!opt) {
+      return '';
+    }
+
+    var opts = [];
+    for (var k = 0; k < opt.length; k++) {
+      opts[k] = [
+        '<div class="opt">',
+          '<div class="opt-title group">',
+            '<strong>',
+              opt[k].name,
+            '</strong> ',
+            opt[k].type ? ' <span>(' + opt[k].type + ')</span>' : '',
+            opt[k]['default'] ? '<span class="def">Default: ' + opt[k]['default'] + '</span>' : '',
+          '</div>',
+          '<div class="opt-desc">',
+            opt[k].desc,
+          '</div>',
+        '</div>'
+      ].join('');
+    }
+    opts.unshift('<div class="options">');
+    opts.push('</div>');
+
+    return opts.join('');
+  },
+
+
   // build the short description for each entry
   desc: function(item) {
     if (KS.includes['desc']) {
@@ -212,7 +245,6 @@ function outputResults(json, xhr) {
       pre: '<li><a href="#' + entryid + '">',
       post: '</a></li>'
     });
-
 
     itemParts[ipCount++] = '<h4><a href="' + it.url + '">' + it.title + '</a></h4>';
     itemParts[ipCount++] = buildItem.signatures(it);
