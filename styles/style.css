@@ -1,4 +1,4 @@
-html, 
+html,
 body {
   margin: 0;
   padding: 0;
@@ -95,7 +95,7 @@ h5 {
   -moz-text-shadow: 1px 1px 1px #222;
   -webkit-text-shadow: 1px 1px 1px #222;
   font-weight: bold;
-  
+
 }
 a.btn {
   text-decoration: none;
@@ -104,8 +104,8 @@ a.btn {
   width: 6.8em;
   display: inline-block;
 }
-button { 
-  font-size: 1.1em; 
+button {
+  font-size: 1.1em;
   padding: 3x 5px;
 }
 a.btn,
@@ -207,6 +207,14 @@ a:active {
 .signature .param {
   padding-left: 1em;
 }
+.signature .options {
+  padding: 1em .5em 0 2em;
+}
+.signature .opt {margin-bottom: 1em;}
+.signature .opt-title strong { float: left; }
+.signature .opt-title span { color: #555; padding-left: 10px; }
+.signature .opt-title .def { float: right; }
+.signature .opt li { margin-top: .45em; }
 .basic .signatures .introduced,
 .signature .param strong {
   color: #444;
@@ -262,7 +270,7 @@ blockquote {
   form {
     width: 90%;
     padding: 2em 3% 1em;
-    
+
   }
   fieldset {
     float: none;
@@ -271,7 +279,7 @@ blockquote {
   .actions {
     margin: 18px 0 18px 0;
   }
-  
+
   #log {
     width: auto;
     padding: 10px 3%;
@@ -296,7 +304,7 @@ blockquote {
   .actions {
     margin: 18px 0 18px 0;
   }
-  
+
   button {
     height: 1.8em;
   }
@@ -307,7 +315,7 @@ blockquote {
   ol {
     padding-left: 3%;
   }
-  
+
 }
 /* clearfix from positioniseverything.net */
 .jqas p.image:after,

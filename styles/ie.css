@@ -1,14 +1,19 @@
 a.btn,
 button {
-	filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=3px, OffY=5px, Color='#AAABAA');
-	-ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=3px, OffY=5px, Color='#AAABAA')";
-
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#009900', endColorstr='#003300');
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#009900', endColorstr='#003300')";
 }
 
+a.btn:hover,
+a.btn:focus,
+button:hover,
+button:focus {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006600', endColorstr='#002200');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#006600', endColorstr='#002200')";
+}
 a.btn:active,
 button:active {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#003300', endColorstr='#009900');
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#003300', endColorstr='#009900')";   
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#002200', endColorstr='#006600');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#002200', endColorstr='#006600')";
+	color: #fff;
 }
