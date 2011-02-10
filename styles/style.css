@@ -288,7 +288,7 @@ blockquote {
     padding-left: 3%;
   }
 }
-@media screen and (max-device-width: 480px) {
+@media screen and (max-width: 480px) {
   body { font-size: 1.5em; }
   form {
     width: 90%;

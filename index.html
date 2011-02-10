@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
   <title>jQuery API Search</title>
   <script>document.documentElement.className = 'js';</script>
   <link rel="stylesheet" href="styles/style.css" type="text/css" media="screen, projection" />
@@ -10,11 +11,12 @@
   <![endif]-->
 </head>
 <body>
+
   <form id="jqas" action="" class="jqas group">
     <div>
       <a id="search-again" class="js-hide btn" href="#">&#x271A; Search Again</a>
       <h3>jQuery API Search <span class="note">A demonstration</span></h3>
-      
+
     </div>
     <fieldset>
       <div class="text">
@@ -62,7 +64,7 @@
           <input type="checkbox" checked="checked" value="params" id="params" name="include[]" />
           <label for="params">Arguments</label>
         </div>
-      
+
         <div class="checkbox">
           <input type="checkbox" checked="checked" value="desc" id="short_description" name="include[]" />
           <label for="short_description">Short Description</label>
@@ -74,12 +76,12 @@
       </div>
     </fieldset>
   </form>
-  
+
 <div id="log"></div>
 <script src="lib/LAB.src.min.js"></script>
 <script>
   $LAB
-  .script('lib/jquery-1.4.2.min.js')
+  .script('lib/jquery-1.5.min.js')
   .wait()
   .script('lib/jquery.bbq.js')
   .script('lib/jquery.smooth-scroll.js')
