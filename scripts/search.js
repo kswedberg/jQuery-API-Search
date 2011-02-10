@@ -140,7 +140,10 @@ var buildItem = {
       for (var k = 0; k < param.length; k++) {
         params += '<div class="param"><strong title="' + param[k].type + '">' + param[k].name + '</strong> ';
         params += param[k].optional ? '<em>optional</em> ' : '';
-        params += param[k].desc + '</div>';
+        params += param[k].desc;
+        params += this.options( param[k] );
+        params += '</div>';
+
       }
     }
     return params;
